@@ -7,6 +7,7 @@ objPos::objPos()
     symbol = 0; //NULL
 }
 
+// copies the memebers of 1 instance into another instance
 objPos::objPos(objPos &o)
 {
     x = o.x;
@@ -15,6 +16,7 @@ objPos::objPos(objPos &o)
 }
 
 
+// constructor
 objPos::objPos(int xPos, int yPos, char sym)
 {
     x = xPos;
