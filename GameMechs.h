@@ -39,6 +39,13 @@ class GameMechs
         int getBoardSizeX();
         int getBoardSizeY();
       
+        void generateFood(objPos blockOff); // TODO: Must be upgraded in interation 3 somehow; (objPosArrayList* snakePosList, objPos* foodPos) ???
+
+        // TODO:
+        // Need to accept the player body array list
+        // go through each array element to make sure thay are all 
+        // blocked off from random food generation
+
 
 };
 
