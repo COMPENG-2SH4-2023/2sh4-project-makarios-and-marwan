@@ -43,12 +43,6 @@ void Player::updatePlayerDir()
 
     char input = mainGameMechsRef->getInput();
 
-    // ESC key
-    if (input == 27)
-    {
-        mainGameMechsRef->setExitTrue();
-    }
-
     // WASD keys
     if (input != 0)
     {

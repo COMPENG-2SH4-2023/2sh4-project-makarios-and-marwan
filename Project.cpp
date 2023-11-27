@@ -12,7 +12,7 @@ using namespace std;
 bool exitFlag;
 Player *player;
 GameMechs *gameMechs;
-objPos game_ui[BOARD_WIDTH][BOARD_HEIGHT];
+
 
 void Initialize(void);
 void GetInput(void);
@@ -50,6 +50,7 @@ void Initialize(void)
 
 void GetInput(void)
 {
+    gameMechs->getInput();
 }
 
 void RunLogic(void)
@@ -63,6 +64,8 @@ void DrawScreen(void)
     // Get the current player position; this will be used to update the game_ui
     objPos curr_player_pos;
     player->getPlayerPos(curr_player_pos);
+
+    objPos game_ui[BOARD_WIDTH][BOARD_HEIGHT] = {0};
     
     // Initialize the border and inner spaces in one loop
     for (int i = 0; i < BOARD_WIDTH; i++)
@@ -101,4 +104,7 @@ void CleanUp(void)
     MacUILib_clearScreen();
 
     MacUILib_uninit();
+
+    delete gameMechs;
+    delete player;
 }
