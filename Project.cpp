@@ -6,10 +6,10 @@
 using namespace std;
 
 #define DELAY_CONST 1000
-#define BOARD_WIDTH 36
-#define BOARD_HEIGHT 36
+#define BOARD_WIDTH 30
+#define BOARD_HEIGHT 15
 
-bool exitFlag;
+
 Player *player;
 GameMechs *gameMechs;
 
@@ -26,7 +26,7 @@ int main(void)
 
     Initialize();
 
-    while (exitFlag == false)
+    while (gameMechs->getExitFlagStatus() == false)
     {
         GetInput();
         RunLogic();
@@ -42,7 +42,7 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    exitFlag = false;
+    //exitFlag = false; //Can get rid of this since the gameMechs exit flag is initialized to false during instatiation
     gameMechs = new GameMechs(BOARD_WIDTH, BOARD_HEIGHT);
     player = new Player(gameMechs);
 
@@ -50,11 +50,15 @@ void Initialize(void)
 
 void GetInput(void)
 {
-    gameMechs->getInput();
+    player->setInput();
+    gameMechs->setInput(gameMechs->getInput());
 }
 
 void RunLogic(void)
 {
+    if(gameMechs->getInput() == 'p')
+        gameMechs->setExitTrue();
+
     player->updatePlayerDir();
     player->movePlayer();
 }
@@ -65,14 +69,14 @@ void DrawScreen(void)
     objPos curr_player_pos;
     player->getPlayerPos(curr_player_pos);
 
-    objPos game_ui[BOARD_WIDTH][BOARD_HEIGHT] = {0};
+    objPos game_ui[gameMechs->getBoardSizeY()][gameMechs->getBoardSizeX()]; //Let marwan know that we should be using gameMechs object for initializing the board
     
     // Initialize the border and inner spaces in one loop
-    for (int i = 0; i < BOARD_WIDTH; i++)
+    for (int i = 0; i < gameMechs->getBoardSizeY(); i++)
     {
-        for (int j = 0; j < BOARD_HEIGHT; j++)
+        for (int j = 0; j < gameMechs->getBoardSizeX(); j++)
         {
-            if (i == 0 || i == BOARD_WIDTH - 1 || j == 0 || j == BOARD_HEIGHT - 1)
+            if (i == 0 || i == gameMechs->getBoardSizeY() - 1 || j == 0 || j == gameMechs->getBoardSizeX() - 1)
             {
                 game_ui[i][j].setObjPos(i, j, '#'); // Set border symbols to '#'
             }
@@ -90,6 +94,12 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");
     }
+
+    MacUILib_printf("The current input is: %c", gameMechs->getInput());
+    if(gameMechs->getInput() == 'p')
+        MacUILib_printf("The current exit flag status is: true ");
+    else
+        MacUILib_printf("The current exit flag status is: false ");
 
     MacUILib_clearScreen();
 }

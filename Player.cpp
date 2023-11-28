@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "MacUILib.h"
 
 Player::Player(GameMechs *thisGMRef)
 {
@@ -32,6 +33,19 @@ void Player::getPlayerPos(objPos &returnPos)
     // returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
 }
 
+void Player::setInput()
+{
+    if (MacUILib_hasChar())
+    {
+        input = MacUILib_getChar();
+    }
+    else
+    {
+        input = 0;
+    }
+
+}
+
 void Player::updatePlayerDir()
 {
     /*
@@ -41,7 +55,6 @@ void Player::updatePlayerDir()
     3. Clear the input in the GameMechs object
     */
 
-    char input = mainGameMechsRef->getInput();
 
     // WASD keys
     if (input != 0)
