@@ -24,12 +24,11 @@ class Player
         void getPlayerPos(objPos &returnPos); // Upgrade this in iteration 3.
         void updatePlayerDir();
         void movePlayer();
-        void setInput();
+
     
     private:
         objPos playerPos;   // Upgrade this in iteration 3.       
         enum Dir myDir;
-        char input;
 
         // Need a reference to the Main Game Mechanisms
         GameMechs* mainGameMechsRef;

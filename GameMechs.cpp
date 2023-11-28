@@ -45,7 +45,7 @@ void GameMechs::setLoseFlag()
     loseFlag = true;
 }
 
-char GameMechs::getInput()
+void GameMechs::readInput()
 {
     if (MacUILib_hasChar())
     {
@@ -55,14 +55,17 @@ char GameMechs::getInput()
     {
         input = 0;
     }
+}
 
+char GameMechs::getInput()
+{
     return input;
 }
 
-void GameMechs::setInput(char this_input)
-{
-    input = this_input;
-}
+// void GameMechs::setInput(char this_input)
+// {
+//     input = this_input;
+// }
 
 void GameMechs::clearInput()
 {

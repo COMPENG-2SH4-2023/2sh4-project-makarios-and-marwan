@@ -42,7 +42,6 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    //exitFlag = false; //Can get rid of this since the gameMechs exit flag is initialized to false during instatiation
     gameMechs = new GameMechs(BOARD_WIDTH, BOARD_HEIGHT);
     player = new Player(gameMechs);
 
@@ -50,15 +49,15 @@ void Initialize(void)
 
 void GetInput(void)
 {
-    player->setInput();
-    gameMechs->setInput(gameMechs->getInput());
+    gameMechs->readInput();
 }
 
 void RunLogic(void)
 {
-    if(gameMechs->getInput() == 'p')
+    if(gameMechs->getInput() == 27)
+    {
         gameMechs->setExitTrue();
-
+    }
     player->updatePlayerDir();
     player->movePlayer();
 }
@@ -95,13 +94,12 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     }
 
-    MacUILib_printf("The current input is: %c", gameMechs->getInput());
-    if(gameMechs->getInput() == 'p')
-        MacUILib_printf("The current exit flag status is: true ");
-    else
-        MacUILib_printf("The current exit flag status is: false ");
+
+        
+    
 
     MacUILib_clearScreen();
+
 }
 
 void LoopDelay(void)

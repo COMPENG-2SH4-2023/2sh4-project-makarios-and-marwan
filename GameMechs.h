@@ -36,8 +36,9 @@ class GameMechs
         bool getLoseFlagStatus();
         void setLoseFlag();
 
-        char getInput();
-        void setInput(char this_input);
+        void readInput(); //Reads the players keyboard input
+        char getInput(); //Return the current input class attribute
+        //void setInput(char this_input);
         void clearInput();
 
         int getBoardSizeX();
