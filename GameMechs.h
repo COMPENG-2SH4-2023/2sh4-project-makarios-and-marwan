@@ -38,7 +38,7 @@ class GameMechs
 
         void readInput(); //Reads the players keyboard input
         char getInput(); //Return the current input class attribute
-        //void setInput(char this_input);
+        void setInput(char this_input);
         void clearInput();
 
         int getBoardSizeX();

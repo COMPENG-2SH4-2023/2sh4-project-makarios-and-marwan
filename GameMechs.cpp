@@ -49,11 +49,11 @@ void GameMechs::readInput()
 {
     if (MacUILib_hasChar())
     {
-        input = MacUILib_getChar();
+        setInput(MacUILib_getChar());
     }
     else
     {
-        input = 0;
+        setInput(0);
     }
 }
 
@@ -62,10 +62,10 @@ char GameMechs::getInput()
     return input;
 }
 
-// void GameMechs::setInput(char this_input)
-// {
-//     input = this_input;
-// }
+void GameMechs::setInput(char this_input)
+{
+    input = this_input;
+}
 
 void GameMechs::clearInput()
 {
