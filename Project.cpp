@@ -26,7 +26,7 @@ int main(void)
 
     Initialize();
 
-    while (gameMechs->getExitFlagStatus() == false)
+    while (gameMechs->getExitFlagStatus() == false && gameMechs->getLoseFlagStatus() == false)
     {
         GetInput();
         RunLogic();
@@ -58,6 +58,11 @@ void RunLogic(void)
     {
         gameMechs->setExitTrue();
     }
+    if(gameMechs->getInput() == 'p')
+        gameMechs->incrementScore();
+    if(gameMechs->getInput() == 'o')
+        gameMechs->setLoseFlag();
+
     player->updatePlayerDir();
     player->movePlayer();
 }
@@ -94,8 +99,8 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     }
 
-
-        
+    MacUILib_printf("score is %d\n", gameMechs->getScore());
+    
     
 
     MacUILib_clearScreen();
@@ -110,7 +115,10 @@ void LoopDelay(void)
 void CleanUp(void)
 {
     MacUILib_clearScreen();
-
+    if(gameMechs->getLoseFlagStatus() == true)
+        MacUILib_printf("You lost. Final score is %d\n", gameMechs->getScore());
+    else if(gameMechs->getExitFlagStatus() == true)
+        MacUILib_printf("You have successfully quits");
     MacUILib_uninit();
 
     delete gameMechs;
