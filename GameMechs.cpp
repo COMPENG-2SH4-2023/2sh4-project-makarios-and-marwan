@@ -106,3 +106,23 @@ void GameMechs::incrementScore()
     //increments the score
     score ++;
 }
+
+void GameMechs::generateFood(objPos blockOff)
+{
+    int candidateX, candidateY;
+    do
+    {
+        candidateX = rand()%(boardSizeX-2)+1;
+        candidateY = rand()%(boardSizeY-2)+1;
+    }while ((candidateX == blockOff.x && candidateY == blockOff.y));
+
+    
+    foodPos.setObjPos(candidateX, candidateY, 'O');
+
+
+}
+
+void GameMechs::getFoodPos(objPos &returnPos)
+{
+    returnPos.setObjPos(foodPos.x, foodPos.y, 'O');
+}

@@ -12,6 +12,7 @@ using namespace std;
 
 Player *player;
 GameMechs *gameMechs;
+objPos curr_player_pos; //need the current player position to generate food
 
 
 void Initialize(void);
@@ -45,6 +46,10 @@ void Initialize(void)
     gameMechs = new GameMechs(BOARD_WIDTH, BOARD_HEIGHT); //create a GameMechs object with a specified board size on the heap
     player = new Player(gameMechs);
 
+    player->getPlayerPos(curr_player_pos);
+
+    gameMechs->generateFood(curr_player_pos);
+
 }
 
 void GetInput(void)
@@ -62,6 +67,8 @@ void RunLogic(void)
         gameMechs->incrementScore(); //increment the gameMechs score attribute by one using the p key
     if(gameMechs->getInput() == 'o')
         gameMechs->setLoseFlag(); //set the loseFlag attribute to true with the o key
+    if(gameMechs->getInput() == 'i')
+        gameMechs->generateFood(curr_player_pos);
 
     player->updatePlayerDir();
     player->movePlayer();
@@ -70,8 +77,9 @@ void RunLogic(void)
 void DrawScreen(void)
 {
     // Get the current player position; this will be used to update the game_ui
-    objPos curr_player_pos;
     player->getPlayerPos(curr_player_pos);
+    objPos curr_food_pos;
+    gameMechs->getFoodPos(curr_food_pos);
 
     objPos game_ui[gameMechs->getBoardSizeY()][gameMechs->getBoardSizeX()];
     
@@ -88,6 +96,10 @@ void DrawScreen(void)
             {
                 game_ui[i][j].setObjPos(curr_player_pos); // Set player
             }
+            else if (i == curr_food_pos.y && j == curr_food_pos.x)
+            {
+                game_ui[i][j].setObjPos(curr_food_pos); // Set player
+            }
             else
             {
                 game_ui[i][j].setObjPos(i, j, ' '); // Set empty spaces to ' '
@@ -100,6 +112,7 @@ void DrawScreen(void)
     }
 
     MacUILib_printf("score is %d\n", gameMechs->getScore()); //print the users score at the bottom
+    MacUILib_printf("Food Coord is(%d,%d)", curr_food_pos.x, curr_food_pos.y);
     
     
 
