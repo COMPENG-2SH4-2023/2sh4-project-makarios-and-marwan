@@ -7,13 +7,13 @@
 
 using namespace std;
 
-#define DELAY_CONST 10
-#define BOARD_WIDTH 36
-#define BOARD_HEIGHT 18
+#define DELAY_CONST 1000
+#define BOARD_WIDTH 30
+#define BOARD_HEIGHT 15
 
-Player *player;
-GameMechs *gameMechs;
-objPosArrayList curr_player_body; // need the current player position to generate food
+Player *player;                   // create a player object on the heap
+GameMechs *gameMechs;             // create a GameMechs object on the heap
+objPosArrayList curr_player_body; // create a objPosArrayList object on the stack
 
 void Initialize(void);
 void GetInput(void);
@@ -46,9 +46,8 @@ void Initialize(void)
     gameMechs = new GameMechs(BOARD_WIDTH, BOARD_HEIGHT); // create a GameMechs object with a specified board size on the heap
     player = new Player(gameMechs);
 
-    player->getPlayerPos(curr_player_body);
-
-    gameMechs->generateFood(curr_player_body); // TODO: generate food so it doesnt collide with snake body
+    player->getPlayerPos(curr_player_body); // get the player position and store it in the curr_player_body objPosArrayList
+    gameMechs->generateFood(curr_player_body); // generate a food position based on the player position
 }
 
 void GetInput(void)
@@ -58,54 +57,67 @@ void GetInput(void)
 
 void RunLogic(void)
 {
-    if (gameMechs->getInput() == 27)
+    char userInput = gameMechs->getInput();
+
+
+
+    switch (userInput)
     {
-        gameMechs->setExitTrue(); // set the exit flag true if the users input is the esc key
-    }
-    if (gameMechs->getInput() == 'p')
+    case 27:
+        gameMechs->setExitTrue(); // set the exit flag true if the user's input is the ESC key
+        break;
+    case 'p':
         gameMechs->incrementScore(); // increment the gameMechs score attribute by one using the p key
-    if (gameMechs->getInput() == 'o')
+        break;
+    case 'o':
         gameMechs->setLoseFlag(); // set the loseFlag attribute to true with the o key
-    if (gameMechs->getInput() == 'i')
+        break;
+    case 'i':
         gameMechs->generateFood(curr_player_body);
+        break;
+    }
 
     player->updatePlayerDir();
     player->movePlayer();
-    player->getPlayerPos(curr_player_body);
+    // Get the current player position and generate a new food position
+    player->getPlayerPos(curr_player_body); // TODO: THERE IS A BUG HERE. COPY CONSTRUCTOR!!!
 }
 
 void DrawScreen(void)
 {
+    MacUILib_clearScreen();
 
-    objPos curr_food_pos, temp_body;
-    gameMechs->getFoodPos(curr_food_pos);
+    int boardSizeX = gameMechs->getBoardSizeX();
+    int boardSizeY = gameMechs->getBoardSizeY();
     bool drawn;
+    objPos curr_food_pos; 
+    objPos temp_body;
 
-    objPos game_ui[gameMechs->getBoardSizeY()][gameMechs->getBoardSizeX()];
+    gameMechs->getFoodPos(curr_food_pos);
 
     // Initialize the border and inner spaces in one loop
-    for (int i = 0; i < gameMechs->getBoardSizeY(); i++)
+    for (int i = 0; i < boardSizeY; i++)
     {
-        for (int j = 0; j < gameMechs->getBoardSizeX(); j++)
+        for (int j = 0; j < boardSizeX; j++)
         {
-            // drawn = false;
+            drawn = false;
 
-            // for (int k = 0; k < curr_player_body.getSize(); k++)
-            // {
-            //     curr_player_body.getElement(temp_body, k);
-            //     if (temp_body.x == j && temp_body.y == i)
-            //     {
-            //         MacUILib_printf("Snake Symbol: %c", temp_body.symbol);
-            //         drawn = true;
-            //         break;
-            //     }
-            // }
+            for (int k = 0; k < curr_player_body.getSize(); k++)
+            {
+                curr_player_body.getElement(temp_body, k);
+                if (temp_body.x == j && temp_body.y == i)
+                {
+                    MacUILib_printf("%c", temp_body.symbol);
+                    drawn = true;
+                    break;
+                }
+            }
 
-            // // skip to next iteration if the player body is drawn
-            // if (drawn)
-            //     continue;
+            // skip to next iteration if the player body is drawn
+            if (drawn)
+                continue;
 
-            if (i == 0 || i == gameMechs->getBoardSizeY() - 1 || j == 0 || j == gameMechs->getBoardSizeX() - 1)
+            if (i == 0 || i == boardSizeY - 1 || j == 0 || j == boardSizeX - 1)
             {
                 MacUILib_printf("#"); // Set border to '#'
             }
@@ -123,16 +135,20 @@ void DrawScreen(void)
     }
 
 
-    MacUILib_printf("score is %d\n", gameMechs->getScore()); // print the users score at the bottom
-    MacUILib_printf("Food Coord is(%d,%d)", curr_food_pos.x, curr_food_pos.y);
+    // DEBUGGING PURPOSES
+    MacUILib_printf("score is %d\n", gameMechs->getScore()); 
+    MacUILib_printf("\n");
 
-    MacUILib_printf("Player position: \n");
+    MacUILib_printf("Food Coord is(%d,%d)\n", curr_food_pos.x, curr_food_pos.y);
+    MacUILib_printf("\n");
+
+    MacUILib_printf("Player position DRAW SCREEN: \n");
     for (int l = 0; l < curr_player_body.getSize(); l++)
     {
         curr_player_body.getElement(temp_body, l);
         MacUILib_printf("<%d,%d> symbol: %c\n", temp_body.x, temp_body.y, temp_body.symbol);
     }
-    MacUILib_clearScreen();
+    
 }
 
 void LoopDelay(void)

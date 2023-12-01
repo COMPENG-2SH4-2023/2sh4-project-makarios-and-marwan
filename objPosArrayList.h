@@ -14,6 +14,8 @@ class objPosArrayList
 
     public:
         objPosArrayList();
+        // copy constructor
+        objPosArrayList(const objPosArrayList &objPosArrayListToCopy);
         ~objPosArrayList();
 
         int getSize();

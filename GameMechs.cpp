@@ -105,27 +105,32 @@ void GameMechs::incrementScore()
     score++;
 }
 
-void GameMechs::generateFood(objPosArrayList blockOff)
+void GameMechs::generateFood(objPosArrayList blockedPositions)
 {
+    // Initialize candidate coordinates and temporary position object
     int candidateX, candidateY;
     objPos tempPos;
-    int bitVectorX[boardSizeX-2]= {0};
-    int bitVectorY[boardSizeY-2] = {0};
 
-    for(int i =0; i < blockOff.getSize(); i++)
+    // Initialize bit vectors for X and Y coordinates
+    int xCoordinateBitVector[boardSizeX-2] = {0};
+    int yCoordinateBitVector[boardSizeY-2] = {0};
+
+    // Mark blocked positions in the bit vectors
+    for(int i = 0; i < blockedPositions.getSize(); i++)
     {
-        blockOff.getElement(tempPos, i);
-        bitVectorX[tempPos.x-1] = 1;
-        bitVectorY[tempPos.y-1] = 1;
+        blockedPositions.getElement(tempPos, i);
+        xCoordinateBitVector[tempPos.x-1] = 1;
+        yCoordinateBitVector[tempPos.y-1] = 1;
     }
 
+    // Generate random candidate coordinates until an unblocked position is found
     do
     {
         candidateX = rand() % (boardSizeX - 2) + 1;
         candidateY = rand() % (boardSizeY - 2) + 1;
-    } while ((bitVectorX[candidateX] == 1 && bitVectorY[candidateY] == 1));
+    } while (xCoordinateBitVector[candidateX-1] == 1 || yCoordinateBitVector[candidateY-1] == 1);
 
-
+    // Set the food position to the unblocked position
     foodPos.setObjPos(candidateX, candidateY, 'O');
 }
 

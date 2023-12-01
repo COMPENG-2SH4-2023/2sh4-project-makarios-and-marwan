@@ -43,10 +43,10 @@ void Player::getPlayerPos(objPosArrayList &returnPos)
 {
     /*
     getPlayerPos:
-    1. write the current player position to the returnPos reference
+    1. Return the player position
     */
 
-    returnPos = *playerPosList;
+    returnPos = *playerPosList; // We need a copy constructor here
 }
 
 void Player::updatePlayerDir()
