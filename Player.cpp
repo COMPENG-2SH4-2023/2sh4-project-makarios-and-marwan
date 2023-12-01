@@ -15,25 +15,39 @@ Player::Player(GameMechs *thisGMRef)
 
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
-    playerPos.setObjPos(boardSizeX / 2, boardSizeY / 2, '@');
+    // playerPos.setObjPos(boardSizeX / 2, boardSizeY / 2, '@'); not true anymore
+    objPos tempPos;
+    tempPos.setObjPos(boardSizeX / 2, boardSizeY / 2, '@');
+
+    playerPosList = new objPosArrayList();
+    playerPosList->insertHead(tempPos);
+
+    // For bebugging purposes
+    playerPosList->insertHead(tempPos);
+    playerPosList->insertHead(tempPos);
+    playerPosList->insertHead(tempPos);
+    playerPosList->insertHead(tempPos);
 }
 
 Player::~Player()
 {
+    /*
+    Player Destructor:
+    1. Delete the playerPosList
+    */
+
+    delete playerPosList;
 }
 
-void Player::getPlayerPos(objPos &returnPos)
+void Player::getPlayerPos(objPosArrayList &returnPos)
 {
     /*
     getPlayerPos:
     1. write the current player position to the returnPos reference
     */
 
-    returnPos = playerPos;
-    // returnPos.setObjPos(playerPos.x, playerPos.y, playerPos.symbol);
+    returnPos = *playerPosList;
 }
-
-
 
 void Player::updatePlayerDir()
 {
@@ -43,7 +57,7 @@ void Player::updatePlayerDir()
     2. Update the player direction based on the input
     3. Clear the input in the GameMechs object
     */
-   char input = mainGameMechsRef->getInput();
+    char input = mainGameMechsRef->getInput();
 
     // WASD keys
     if (input != 0)
@@ -106,23 +120,32 @@ void Player::movePlayer()
     1. Update the player position based on the player direction
     2. Wrap around the player position if necessary
     */
+
+    objPos curr_head; // holding the pos info of the current head
+    playerPosList->getHeadElement(curr_head);
+
     int BOARD_WIDTH = mainGameMechsRef->getBoardSizeX();
     int BOARD_HEIGHT = mainGameMechsRef->getBoardSizeY();
 
     switch (myDir)
     {
     case UP:
-        playerPos.y = (playerPos.y > 1) ? playerPos.y - 1 : BOARD_HEIGHT - 2; // decrement or wrap around
+        curr_head.y = (curr_head.y > 1) ? curr_head.y - 1 : BOARD_HEIGHT - 2; // decrement or wrap around
         break;
     case DOWN:
-        playerPos.y = (playerPos.y < BOARD_HEIGHT - 2) ? playerPos.y + 1 : 1; // increment or wrap around
+        curr_head.y = (curr_head.y < BOARD_HEIGHT - 2) ? curr_head.y + 1 : 1; // increment or wrap around
         break;
     case LEFT:
-        playerPos.x = (playerPos.x > 1) ? playerPos.x - 1 : BOARD_WIDTH - 2; // decrement or wrap around
+        curr_head.x = (curr_head.x > 1) ? curr_head.x - 1 : BOARD_WIDTH - 2; // decrement or wrap around
         break;
     case RIGHT:
-        playerPos.x = (playerPos.x < BOARD_WIDTH - 2) ? playerPos.x + 1 : 1; // increment or wrap around
+        curr_head.x = (curr_head.x < BOARD_WIDTH - 2) ? curr_head.x + 1 : 1; // increment or wrap around
         break;
     }
-}
 
+    // new current head should be inserted to the head of the list
+    playerPosList->insertHead(curr_head);
+
+    // then remove the tail of the list
+    playerPosList->removeTail();
+}

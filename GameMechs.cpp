@@ -3,7 +3,7 @@
 
 GameMechs::GameMechs()
 {
-    //default constructor
+    // default constructor
     boardSizeX = 30;
     boardSizeY = 15;
     exitFlag = false;
@@ -14,7 +14,7 @@ GameMechs::GameMechs()
 
 GameMechs::GameMechs(int boardX, int boardY)
 {
-    //special constructor which allows programmer to set the x and y size of the board
+    // special constructor which allows programmer to set the x and y size of the board
     boardSizeX = boardX;
     boardSizeY = boardY;
     exitFlag = false;
@@ -25,36 +25,34 @@ GameMechs::GameMechs(int boardX, int boardY)
 
 // do you need a destructor?
 
-
-
 bool GameMechs::getExitFlagStatus()
 {
-    //returns exit flag
+    // returns exit flag
     return exitFlag;
 }
 
 void GameMechs::setExitTrue()
 {
-    //sets exit flag to true which is used to break out of the program loop and print the exit message
+    // sets exit flag to true which is used to break out of the program loop and print the exit message
     exitFlag = true;
 }
 
 bool GameMechs::getLoseFlagStatus()
 {
-    //returens the lose flag
+    // returens the lose flag
     return loseFlag;
 }
 
 void GameMechs::setLoseFlag()
 {
-    //sets exit flag to true which is used to break out of the program loop and print the losing message
+    // sets exit flag to true which is used to break out of the program loop and print the losing message
     loseFlag = true;
 }
 
 void GameMechs::readInput()
 {
-    //checks if user has made a keyboard input and set the input attribute equal to that char
-    //if there is no keyboard input then set the attribute to null
+    // checks if user has made a keyboard input and set the input attribute equal to that char
+    // if there is no keyboard input then set the attribute to null
     if (MacUILib_hasChar())
     {
         setInput(MacUILib_getChar());
@@ -67,59 +65,68 @@ void GameMechs::readInput()
 
 char GameMechs::getInput()
 {
-    //returns input attribute
+    // returns input attribute
     return input;
 }
 
 void GameMechs::setInput(char this_input)
 {
-    //sets the input attribute to the char passed into this method
+    // sets the input attribute to the char passed into this method
     input = this_input;
 }
 
 void GameMechs::clearInput()
 {
-    //sets input to 0
+    // sets input to 0
     input = 0;
 }
 
 int GameMechs::getBoardSizeX()
 {
-    //returns the horizontal size of the board
+    // returns the horizontal size of the board
     return boardSizeX;
 }
 
 int GameMechs::getBoardSizeY()
 {
-    //returns the vertical size of the board
+    // returns the vertical size of the board
     return boardSizeY;
 }
 
 int GameMechs::getScore()
 {
-    //returns the score
+    // returns the score
     return score;
 }
 
 void GameMechs::incrementScore()
 {
-    //increments the score
-    score ++;
+    // increments the score
+    score++;
 }
 
-void GameMechs::generateFood(objPos blockOff)
+void GameMechs::generateFood(objPosArrayList blockOff)
 {
     int candidateX, candidateY;
+    objPos tempPos;
+    int bitVectorX[boardSizeX-2]= {0};
+    int bitVectorY[boardSizeY-2] = {0};
+
+    for(int i =0; i < blockOff.getSize(); i++)
+    {
+        blockOff.getElement(tempPos, i);
+        bitVectorX[tempPos.x-1] = 1;
+        bitVectorY[tempPos.y-1] = 1;
+    }
+
     do
     {
-        candidateX = rand()%(boardSizeX-2)+1;
-        candidateY = rand()%(boardSizeY-2)+1;
-    }while ((candidateX == blockOff.x && candidateY == blockOff.y));
+        candidateX = rand() % (boardSizeX - 2) + 1;
+        candidateY = rand() % (boardSizeY - 2) + 1;
+    } while ((bitVectorX[candidateX] == 1 && bitVectorY[candidateY] == 1));
 
-    
+
     foodPos.setObjPos(candidateX, candidateY, 'O');
-
-
 }
 
 void GameMechs::getFoodPos(objPos &returnPos)
