@@ -86,6 +86,7 @@ void RunLogic(void)
     player->movePlayer(gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY());
     // Get the current player position and generate a new food position
     player->getPlayerPos(curr_player_body); // TODO: THERE IS A BUG HERE. COPY CONSTRUCTOR!!!
+    player->checkSelfColision();
 }
 
 void DrawScreen(void)

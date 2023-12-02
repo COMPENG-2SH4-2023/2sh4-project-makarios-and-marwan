@@ -27,6 +27,7 @@ class Player
         void movePlayer(int sizeX, int sizeY);
         void setFoodObj(Food currFoodObj);
         void getFoodPos(objPos &currFoodPos);
+        void checkSelfColision();
         // TODO: Need more actions in here:
         // after inserting the head, but before removing the tail
         // - check if new head position collides with food

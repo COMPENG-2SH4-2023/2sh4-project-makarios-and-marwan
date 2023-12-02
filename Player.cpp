@@ -24,10 +24,10 @@ Player::Player(GameMechs *thisGMRef)
     playerPosList->insertHead(tempPos);
 
     // For bebugging purposes
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
+    // playerPosList->insertHead(tempPos);
+    // playerPosList->insertHead(tempPos);
+    // playerPosList->insertHead(tempPos);
+    // playerPosList->insertHead(tempPos);
 }
 
 Player::~Player()
@@ -179,4 +179,16 @@ void Player::getFoodPos(objPos &currFoodPos)
     objPos tempPos;
     foodObj.getFoodPos(tempPos);
     currFoodPos.setObjPos(tempPos);
+}
+
+void Player::checkSelfColision()
+{
+    objPos snakeHead, snakeBody;
+    playerPosList->getHeadElement(snakeHead);
+    for(int i = 1; i < playerPosList->getSize(); i++)
+    {
+        playerPosList->getElement(snakeBody, i);
+        if(snakeHead.x == snakeBody.x && snakeHead.y == snakeBody.y)
+            mainGameMechsRef->setLoseFlag();
+    }
 }
