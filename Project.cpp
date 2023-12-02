@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "GameMechs.h"
 #include "objPosArrayList.h"
+#include "Food.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ using namespace std;
 Player *player;                   // create a player object on the heap
 GameMechs *gameMechs;             // create a GameMechs object on the heap
 objPosArrayList curr_player_body; // create a objPosArrayList object on the stack
+Food *curr_food;
 
 void Initialize(void);
 void GetInput(void);
@@ -45,9 +47,10 @@ void Initialize(void)
 
     gameMechs = new GameMechs(BOARD_WIDTH, BOARD_HEIGHT); // create a GameMechs object with a specified board size on the heap
     player = new Player(gameMechs);
+    curr_food = new Food();
 
     player->getPlayerPos(curr_player_body); // get the player position and store it in the curr_player_body objPosArrayList
-    gameMechs->generateFood(curr_player_body); // generate a food position based on the player position
+    curr_food->generateFood(curr_player_body, gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY()); // generate a food position based on the player position
 }
 
 void GetInput(void)
@@ -73,7 +76,7 @@ void RunLogic(void)
         gameMechs->setLoseFlag(); // set the loseFlag attribute to true with the o key
         break;
     case 'i':
-        gameMechs->generateFood(curr_player_body);
+        curr_food->generateFood(curr_player_body, gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY());
         break;
     }
 
@@ -93,7 +96,7 @@ void DrawScreen(void)
     objPos curr_food_pos; 
     objPos temp_body;
 
-    gameMechs->getFoodPos(curr_food_pos);
+    curr_food->getFoodPos(curr_food_pos);
 
     // Initialize the border and inner spaces in one loop
     for (int i = 0; i < boardSizeY; i++)
@@ -167,4 +170,5 @@ void CleanUp(void)
 
     delete gameMechs;
     delete player;
+    delete curr_food;
 }
