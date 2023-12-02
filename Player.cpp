@@ -135,22 +135,33 @@ void Player::movePlayer(int sizeX, int sizeY)
     switch (myDir)
     {
     case UP:
-        curr_head.y = (curr_head.y > 1) ? curr_head.y - 1 : BOARD_HEIGHT - 2; // decrement or wrap around
+        if(curr_head.getY() > 1)
+            curr_head.setY(curr_head.getY() - 1);
+        else
+            curr_head.setY(BOARD_HEIGHT-2);
         break;
     case DOWN:
-        curr_head.y = (curr_head.y < BOARD_HEIGHT - 2) ? curr_head.y + 1 : 1; // increment or wrap around
+        if(curr_head.getY()< BOARD_HEIGHT - 2)
+            curr_head.setY(curr_head.getY() + 1);
+        else
+            curr_head.setY(1);
         break;
     case LEFT:
-        curr_head.x = (curr_head.x > 1) ? curr_head.x - 1 : BOARD_WIDTH - 2; // decrement or wrap around
+        if(curr_head.getX() > 1)
+            curr_head.setX(curr_head.getX()-1);
+        else
+            curr_head.setX(BOARD_WIDTH - 2);
         break;
     case RIGHT:
-        curr_head.x = (curr_head.x < BOARD_WIDTH - 2) ? curr_head.x + 1 : 1; // increment or wrap around
+        if(curr_head.getX() < BOARD_WIDTH - 2)
+            curr_head.setX(curr_head.getX() + 1);
+        else
+            curr_head.setX(1);
         break;
     }
 
-    MacUILib_printf("%d\n", foodObjPos.x);
 
-    if(snakeBodyNode.x == foodObjPos.x && snakeBodyNode.y == foodObjPos.y)
+    if(snakeBodyNode.getX() == foodObjPos.getX() && snakeBodyNode.getY() == foodObjPos.getY())
     {
 
         playerPosList->insertHead(curr_head);
@@ -188,7 +199,7 @@ void Player::checkSelfColision()
     for(int i = 1; i < playerPosList->getSize(); i++)
     {
         playerPosList->getElement(snakeBody, i);
-        if(snakeHead.x == snakeBody.x && snakeHead.y == snakeBody.y)
+        if(snakeHead.getX() == snakeBody.getX() && snakeHead.getY() == snakeBody.getY())
             mainGameMechsRef->setLoseFlag();
     }
 }

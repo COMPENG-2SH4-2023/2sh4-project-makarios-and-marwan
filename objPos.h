@@ -4,10 +4,6 @@
 class objPos
 {
     public:
-        int x;
-        int y;
-        char symbol;
-
         objPos();
         objPos(objPos &o); // copy constructor
         objPos(int xPos, int yPos, char sym);
@@ -20,6 +16,17 @@ class objPos
         bool isPosEqual(const objPos* refPos);
         
         char getSymbolIfPosEqual(const objPos* refPos);
+
+        int getX();
+        int getY();
+
+        int setX(int input);
+        int setY(int input);
+
+    private:
+        int x;
+        int y;
+        char symbol;
 };
 
 #endif

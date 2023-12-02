@@ -60,3 +60,23 @@ char objPos::getSymbolIfPosEqual(const objPos* refPos)
     else
         return 0;
 }
+
+int objPos::getX()
+{
+    return x;
+}
+
+int objPos::getY()
+{
+    return y;
+}
+
+int objPos::setX(int input)
+{
+    x = input;
+}
+
+int objPos::setY(int input)
+{
+    y = input;
+}

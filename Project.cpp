@@ -112,9 +112,9 @@ void DrawScreen(void)
             for (int k = 0; k < curr_player_body.getSize(); k++)
             {
                 curr_player_body.getElement(temp_body, k);
-                if (temp_body.x == j && temp_body.y == i)
+                if (temp_body.getX() == j && temp_body.getY() == i)
                 {
-                    MacUILib_printf("%c", temp_body.symbol);
+                    MacUILib_printf("%c", temp_body.getSymbol());
                     drawn = true;
                     break;
                 }
@@ -129,7 +129,7 @@ void DrawScreen(void)
                 MacUILib_printf("#"); // Set border to '#'
             }
             // draw inner spaces
-            else if (i == curr_food_pos.y && j == curr_food_pos.x)
+            else if (i == curr_food_pos.getY() && j == curr_food_pos.getX())
             {
                 MacUILib_printf("%c", curr_food_pos.getSymbol()); // Set food to 'F'
             }
@@ -146,14 +146,14 @@ void DrawScreen(void)
     MacUILib_printf("score is %d\n", gameMechs->getScore()); 
     MacUILib_printf("\n");
 
-    MacUILib_printf("Food Coord is(%d,%d)\n", curr_food_pos.x, curr_food_pos.y);
+    MacUILib_printf("Food Coord is(%d,%d)\n", curr_food_pos.getX(), curr_food_pos.getY());
     MacUILib_printf("\n");
 
     MacUILib_printf("Player position DRAW SCREEN: \n");
     for (int l = 0; l < curr_player_body.getSize(); l++)
     {
         curr_player_body.getElement(temp_body, l);
-        MacUILib_printf("<%d,%d> symbol: %c\n", temp_body.x, temp_body.y, temp_body.symbol);
+        MacUILib_printf("<%d,%d> symbol: %c\n", temp_body.getX(), temp_body.getY(), temp_body.getSymbol());
     }
 
     

@@ -119,8 +119,8 @@ void GameMechs::generateFood(objPosArrayList blockedPositions)
     for(int i = 0; i < blockedPositions.getSize(); i++)
     {
         blockedPositions.getElement(tempPos, i);
-        xCoordinateBitVector[tempPos.x-1] = 1;
-        yCoordinateBitVector[tempPos.y-1] = 1;
+        xCoordinateBitVector[tempPos.getX()-1] = 1;
+        yCoordinateBitVector[tempPos.getY()-1] = 1;
     }
 
     // Generate random candidate coordinates until an unblocked position is found
@@ -136,5 +136,5 @@ void GameMechs::generateFood(objPosArrayList blockedPositions)
 
 void GameMechs::getFoodPos(objPos &returnPos)
 {
-    returnPos.setObjPos(foodPos.x, foodPos.y, 'O');
+    returnPos.setObjPos(foodPos.getX(), foodPos.getY(), 'O');
 }
