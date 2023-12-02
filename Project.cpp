@@ -155,7 +155,6 @@ void DrawScreen(void)
         MacUILib_printf("<%d,%d> symbol: %c\n", temp_body.x, temp_body.y, temp_body.symbol);
     }
 
-    player->printFoodObjPos();
     
 }
 

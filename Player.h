@@ -26,8 +26,6 @@ class Player
         void updatePlayerDir();
         void movePlayer(int sizeX, int sizeY);
         void setFoodObj(Food currFoodObj);
-        bool checkFoodConsumption();
-        void printFoodObjPos(); //this should be temp
         void getFoodPos(objPos &currFoodPos);
         // TODO: Need more actions in here:
         // after inserting the head, but before removing the tail

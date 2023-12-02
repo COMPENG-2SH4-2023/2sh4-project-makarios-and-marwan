@@ -173,25 +173,6 @@ void Player::setFoodObj(Food currFoodObj)
     foodObj = currFoodObj;
 }
 
-bool Player::checkFoodConsumption()
-{
-    objPos foodObjPos, snakeBodyNode;
-    foodObj.getFoodPos(foodObjPos);
-    playerPosList->getHeadElement(snakeBodyNode);
-
-    if(snakeBodyNode.x == foodObjPos.x && snakeBodyNode.y == foodObjPos.y)
-        return true;
-    else
-        return false;
-    
-}
-
-void Player::printFoodObjPos() //this should be temp
-{
-    objPos tempObj;
-    foodObj.getFoodPos(tempObj);
-    MacUILib_printf("The coordinate of the food obj in player class is %d, %d", tempObj.x, tempObj.y);
-}
 
 void Player::getFoodPos(objPos &currFoodPos)
 {
