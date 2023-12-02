@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "GameMechs.h"
+#include "Food.h"
 #include "objPos.h"
 #include "objPosArrayList.h"
 
@@ -23,7 +24,11 @@ class Player
 
         void getPlayerPos(objPosArrayList &returnPos); // Upgrade this in iteration 3.
         void updatePlayerDir();
-        void movePlayer();
+        void movePlayer(int sizeX, int sizeY);
+        void setFoodObj(Food currFoodObj);
+        bool checkFoodConsumption();
+        void printFoodObjPos(); //this should be temp
+        void getFoodPos(objPos &currFoodPos);
         // TODO: Need more actions in here:
         // after inserting the head, but before removing the tail
         // - check if new head position collides with food
@@ -43,7 +48,7 @@ class Player
     private:
         objPosArrayList *playerPosList;   // Upgrade this in iteration 3.       
         enum Dir myDir;
-
+        Food foodObj;
         // Need a reference to the Main Game Mechanisms
         GameMechs* mainGameMechsRef;
 };

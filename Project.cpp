@@ -51,6 +51,7 @@ void Initialize(void)
 
     player->getPlayerPos(curr_player_body); // get the player position and store it in the curr_player_body objPosArrayList
     curr_food->generateFood(curr_player_body, gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY()); // generate a food position based on the player position
+    player->setFoodObj(*curr_food);
 }
 
 void GetInput(void)
@@ -77,11 +78,12 @@ void RunLogic(void)
         break;
     case 'i':
         curr_food->generateFood(curr_player_body, gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY());
+        player->setFoodObj(*curr_food);
         break;
     }
 
     player->updatePlayerDir();
-    player->movePlayer();
+    player->movePlayer(gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY());
     // Get the current player position and generate a new food position
     player->getPlayerPos(curr_player_body); // TODO: THERE IS A BUG HERE. COPY CONSTRUCTOR!!!
 }
@@ -97,6 +99,7 @@ void DrawScreen(void)
     objPos temp_body;
 
     curr_food->getFoodPos(curr_food_pos);
+    player->getFoodPos(curr_food_pos);
 
     // Initialize the border and inner spaces in one loop
     for (int i = 0; i < boardSizeY; i++)
@@ -151,6 +154,8 @@ void DrawScreen(void)
         curr_player_body.getElement(temp_body, l);
         MacUILib_printf("<%d,%d> symbol: %c\n", temp_body.x, temp_body.y, temp_body.symbol);
     }
+
+    player->printFoodObjPos();
     
 }
 

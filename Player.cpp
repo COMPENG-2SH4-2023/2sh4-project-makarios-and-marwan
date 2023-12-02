@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Food.h"
 #include "MacUILib.h"
 
 Player::Player(GameMechs *thisGMRef)
@@ -113,13 +114,17 @@ void Player::updatePlayerDir()
     mainGameMechsRef->clearInput();
 }
 
-void Player::movePlayer()
+void Player::movePlayer(int sizeX, int sizeY)
 {
     /*
     movePlayer:
     1. Update the player position based on the player direction
     2. Wrap around the player position if necessary
     */
+    // these are used for determining if the snake head colides with a food object
+    objPos foodObjPos, snakeBodyNode;
+    foodObj.getFoodPos(foodObjPos);
+    playerPosList->getHeadElement(snakeBodyNode);
 
     objPos curr_head; // holding the pos info of the current head
     playerPosList->getHeadElement(curr_head);
@@ -143,9 +148,54 @@ void Player::movePlayer()
         break;
     }
 
-    // new current head should be inserted to the head of the list
-    playerPosList->insertHead(curr_head);
+    MacUILib_printf("%d\n", foodObjPos.x);
 
-    // then remove the tail of the list
-    playerPosList->removeTail();
+    if(snakeBodyNode.x == foodObjPos.x && snakeBodyNode.y == foodObjPos.y)
+    {
+
+        playerPosList->insertHead(curr_head);
+        foodObj.generateFood(*playerPosList, sizeX, sizeY);
+        mainGameMechsRef->incrementScore();
+
+    }
+    else
+    {
+        // new current head should be inserted to the head of the list
+        playerPosList->insertHead(curr_head);
+
+        // then remove the tail of the list
+        playerPosList->removeTail();
+    }
+}
+
+void Player::setFoodObj(Food currFoodObj)
+{
+    foodObj = currFoodObj;
+}
+
+bool Player::checkFoodConsumption()
+{
+    objPos foodObjPos, snakeBodyNode;
+    foodObj.getFoodPos(foodObjPos);
+    playerPosList->getHeadElement(snakeBodyNode);
+
+    if(snakeBodyNode.x == foodObjPos.x && snakeBodyNode.y == foodObjPos.y)
+        return true;
+    else
+        return false;
+    
+}
+
+void Player::printFoodObjPos() //this should be temp
+{
+    objPos tempObj;
+    foodObj.getFoodPos(tempObj);
+    MacUILib_printf("The coordinate of the food obj in player class is %d, %d", tempObj.x, tempObj.y);
+}
+
+void Player::getFoodPos(objPos &currFoodPos)
+{
+    objPos tempPos;
+    foodObj.getFoodPos(tempPos);
+    currFoodPos.setObjPos(tempPos);
 }
