@@ -10,3 +10,9 @@ Section: L01
 MacID: ali186
 
 StudentID: 400450021
+
+Section: L03
+
+MacID: samwailm
+
+StudentID: 400455949
