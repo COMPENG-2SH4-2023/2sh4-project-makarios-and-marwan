@@ -1,17 +1,13 @@
 #include "objPosArrayList.h"
 
-// Check lecture contents on general purpose array list construction, 
-// and modify it to support objPos array list construction.
-
-objPosArrayList::objPosArrayList()
+objPosArrayList::objPosArrayList() // default constructor
 {
     aList = new objPos[ARRAY_MAX_CAP];
     sizeList = 0;
     sizeArray = ARRAY_MAX_CAP;
 }
 
-// copy constructor
-objPosArrayList::objPosArrayList(const objPosArrayList &objPosArrayListToCopy)
+objPosArrayList::objPosArrayList(const objPosArrayList &objPosArrayListToCopy) // copy constructor (deep copy)
 {
     sizeList = objPosArrayListToCopy.sizeList;
     sizeArray = objPosArrayListToCopy.sizeArray;
@@ -22,13 +18,29 @@ objPosArrayList::objPosArrayList(const objPosArrayList &objPosArrayListToCopy)
     }
 }
 
-objPosArrayList::~objPosArrayList()
+// copy method (deep copy)
+void objPosArrayList::copy(const objPosArrayList &objPosArrayListToCopy)
 {
-    delete[] aList; // remember to delete [] to free up the the instances of the array
-                    // otherwise, only the first instance will be deleted
+    delete[] aList; // delete the original array
+
+    sizeList = objPosArrayListToCopy.sizeList;
+    sizeArray = objPosArrayListToCopy.sizeArray;
+    aList = nullptr;
+    if (objPosArrayListToCopy.aList != nullptr) {
+        aList = new objPos[sizeArray];
+        for (int i = 0; i < sizeList; i++)
+        {
+            aList[i] = objPosArrayListToCopy.aList[i];
+        }
+    }
 }
 
-int objPosArrayList::getSize()
+objPosArrayList::~objPosArrayList()
+{
+    delete[] aList;
+}
+
+int objPosArrayList::getSize() // return the size of the array
 {
     return sizeList;
 }

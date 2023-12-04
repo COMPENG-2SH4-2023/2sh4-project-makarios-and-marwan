@@ -23,8 +23,6 @@ GameMechs::GameMechs(int boardX, int boardY)
     score = 0;
 }
 
-// do you need a destructor?
-
 bool GameMechs::getExitFlagStatus()
 {
     // returns exit flag
@@ -103,38 +101,4 @@ void GameMechs::incrementScore()
 {
     // increments the score
     score++;
-}
-
-void GameMechs::generateFood(objPosArrayList blockedPositions)
-{
-    // Initialize candidate coordinates and temporary position object
-    int candidateX, candidateY;
-    objPos tempPos;
-
-    // Initialize bit vectors for X and Y coordinates
-    int xCoordinateBitVector[boardSizeX-2] = {0};
-    int yCoordinateBitVector[boardSizeY-2] = {0};
-
-    // Mark blocked positions in the bit vectors
-    for(int i = 0; i < blockedPositions.getSize(); i++)
-    {
-        blockedPositions.getElement(tempPos, i);
-        xCoordinateBitVector[tempPos.getX()-1] = 1;
-        yCoordinateBitVector[tempPos.getY()-1] = 1;
-    }
-
-    // Generate random candidate coordinates until an unblocked position is found
-    do
-    {
-        candidateX = rand() % (boardSizeX - 2) + 1;
-        candidateY = rand() % (boardSizeY - 2) + 1;
-    } while (xCoordinateBitVector[candidateX-1] == 1 || yCoordinateBitVector[candidateY-1] == 1);
-
-    // Set the food position to the unblocked position
-    foodPos.setObjPos(candidateX, candidateY, 'O');
-}
-
-void GameMechs::getFoodPos(objPos &returnPos)
-{
-    returnPos.setObjPos(foodPos.getX(), foodPos.getY(), 'O');
 }

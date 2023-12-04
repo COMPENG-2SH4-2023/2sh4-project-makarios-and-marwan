@@ -9,24 +9,17 @@
 
 using namespace std;
 
-
 class Food
 {
-    // Construct the remaining declaration from the project manual.
+private:
+    objPos foodPos;
 
-    // Only some sample members are included here
+public:
+    Food();
+    ~Food();
 
-    // You will include more data members and member functions to complete your design.
-
-    private:
-        objPos foodPos;
-
-    public:
-        Food();
-        ~Food();
-
-        void generateFood(objPosArrayList blockedPositions, int sizeX, int sizeY);
-        void getFoodPos(objPos &returnPos);
+    void generateFood(objPosArrayList blockedPositions, int sizeX, int sizeY);
+    void getFoodPos(objPos &returnPos);
 };
 
 #endif

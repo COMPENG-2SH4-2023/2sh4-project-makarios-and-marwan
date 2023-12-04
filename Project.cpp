@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#define DELAY_CONST 1000
+#define DELAY_CONST 100000
 #define BOARD_WIDTH 30
 #define BOARD_HEIGHT 15
 
@@ -45,47 +45,44 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    gameMechs = new GameMechs(BOARD_WIDTH, BOARD_HEIGHT); // create a GameMechs object with a specified board size on the heap
+    // Initialize the game mechanics, player, and food instances
+    gameMechs = new GameMechs(BOARD_WIDTH, BOARD_HEIGHT);
     player = new Player(gameMechs);
     curr_food = new Food();
 
-    player->getPlayerPos(curr_player_body); // get the player position and store it in the curr_player_body objPosArrayList
-    curr_food->generateFood(curr_player_body, gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY()); // generate a food position based on the player position
+    // store the player position in the curr_player_body objPosArrayList
+    curr_player_body.copy(player->getPlayerPos());
+
+    // generate a food position based on the player position
+    curr_food->generateFood(curr_player_body, gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY());
+
+    // set the food object in the player object
     player->setFoodObj(*curr_food);
 }
 
 void GetInput(void)
 {
-    gameMechs->readInput(); // get the users input and store it in the gameMechs input attribute
+    // get the users input and store it in the gameMechs input attribute
+    gameMechs->readInput();
 }
 
 void RunLogic(void)
 {
+    // get the user input
     char userInput = gameMechs->getInput();
 
-
-
-    switch (userInput)
+    // check if the user input exits the game
+    if (userInput == 27)
     {
-    case 27:
-        gameMechs->setExitTrue(); // set the exit flag true if the user's input is the ESC key
-        break;
-    case 'p':
-        gameMechs->incrementScore(); // increment the gameMechs score attribute by one using the p key
-        break;
-    case 'o':
-        gameMechs->setLoseFlag(); // set the loseFlag attribute to true with the o key
-        break;
-    case 'i':
-        curr_food->generateFood(curr_player_body, gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY());
-        player->setFoodObj(*curr_food);
-        break;
+        gameMechs->setExitTrue();
     }
 
+    // update the player direction based on the user input
     player->updatePlayerDir();
     player->movePlayer(gameMechs->getBoardSizeX(), gameMechs->getBoardSizeY());
-    // Get the current player position and generate a new food position
-    player->getPlayerPos(curr_player_body); // TODO: THERE IS A BUG HERE. COPY CONSTRUCTOR!!!
+
+    // After the player moves, update the player position in the curr_player_body objPosArrayList
+    curr_player_body.copy(player->getPlayerPos());
     player->checkSelfColision();
 }
 
@@ -93,22 +90,28 @@ void DrawScreen(void)
 {
     MacUILib_clearScreen();
 
+    // get the board size
     int boardSizeX = gameMechs->getBoardSizeX();
     int boardSizeY = gameMechs->getBoardSizeY();
-    bool drawn;
-    objPos curr_food_pos; 
+
+    bool drawn; // a flag to check if the player body is drawn
+
+    // dummy variables
+    objPos curr_food_pos;
     objPos temp_body;
 
+    // update dummy variables
     curr_food->getFoodPos(curr_food_pos);
     player->getFoodPos(curr_food_pos);
 
-    // Initialize the border and inner spaces in one loop
+    // draw the game
     for (int i = 0; i < boardSizeY; i++)
     {
         for (int j = 0; j < boardSizeX; j++)
         {
             drawn = false;
 
+            // draw the player body
             for (int k = 0; k < curr_player_body.getSize(); k++)
             {
                 curr_player_body.getElement(temp_body, k);
@@ -131,7 +134,7 @@ void DrawScreen(void)
             // draw inner spaces
             else if (i == curr_food_pos.getY() && j == curr_food_pos.getX())
             {
-                MacUILib_printf("%c", curr_food_pos.getSymbol()); // Set food to 'F'
+                MacUILib_printf("%c", curr_food_pos.getSymbol()); // Print food
             }
             else
             {
@@ -141,22 +144,9 @@ void DrawScreen(void)
         MacUILib_printf("\n");
     }
 
-
-    // DEBUGGING PURPOSES
-    MacUILib_printf("score is %d\n", gameMechs->getScore()); 
+    // print the score
+    MacUILib_printf("score is %d\n", gameMechs->getScore());
     MacUILib_printf("\n");
-
-    MacUILib_printf("Food Coord is(%d,%d)\n", curr_food_pos.getX(), curr_food_pos.getY());
-    MacUILib_printf("\n");
-
-    MacUILib_printf("Player position DRAW SCREEN: \n");
-    for (int l = 0; l < curr_player_body.getSize(); l++)
-    {
-        curr_player_body.getElement(temp_body, l);
-        MacUILib_printf("<%d,%d> symbol: %c\n", temp_body.getX(), temp_body.getY(), temp_body.getSymbol());
-    }
-
-    
 }
 
 void LoopDelay(void)

@@ -9,48 +9,43 @@
 
 using namespace std;
 
-
 class GameMechs
 {
-    // Construct the remaining declaration from the project manual.
 
-    // Only some sample members are included here
+private:
+    char input;
+    bool exitFlag; // used to break out of the program loop and print the exit message
+    bool loseFlag; // used to break out of the program loop and print the losing message
+    int score;
+    int boardSizeX;
+    int boardSizeY;
 
-    // You will include more data members and member functions to complete your design.
+public:
+    // Constructors
+    GameMechs();
+    GameMechs(int boardX, int boardY);
 
-    private:
-        char input;
-        bool exitFlag;
-        bool loseFlag;
-        int score;
-        int boardSizeX;
-        int boardSizeY;
-        objPos foodPos;
+    // Exit Flag
+    bool getExitFlagStatus();
+    void setExitTrue();
 
-    public:
-        GameMechs();
-        GameMechs(int boardX, int boardY);
-        
-        bool getExitFlagStatus();
-        void setExitTrue();
+    // Lose Flag
+    bool getLoseFlagStatus();
+    void setLoseFlag();
 
-        bool getLoseFlagStatus();
-        void setLoseFlag();
+    // Input
+    void readInput(); // Reads the players keyboard input
+    char getInput();  // Return the current input class attribute
+    void setInput(char this_input);
+    void clearInput();
 
-        void readInput(); //Reads the players keyboard input
-        char getInput(); //Return the current input class attribute
-        void setInput(char this_input);
-        void clearInput();
+    // Board Size
+    int getBoardSizeX();
+    int getBoardSizeY();
 
-        int getBoardSizeX();
-        int getBoardSizeY();
-
-        int getScore();
-        void incrementScore();
-
-        void generateFood(objPosArrayList blockedPositions);
-        void getFoodPos(objPos &returnPos);
-
+    // Score
+    int getScore();
+    void incrementScore();
 };
 
 #endif

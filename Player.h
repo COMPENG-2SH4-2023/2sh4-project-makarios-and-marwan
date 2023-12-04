@@ -8,48 +8,32 @@
 
 class Player
 {
-    // Construct the remaining declaration from the project manual.
+public:
+    enum Dir
+    {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        STOP
+    }; // This is the direction state
 
-    // Only some sample members are included here
+    Player(GameMechs *thisGMRef); // Constructor
+    ~Player();
 
-    // You will include more data members and member functions to complete your design.
+    objPosArrayList getPlayerPos();
+    void getPlayerPos(objPosArrayList &returnPos);
+    void updatePlayerDir();
+    void movePlayer(int sizeX, int sizeY);
+    void setFoodObj(Food currFoodObj);
+    void getFoodPos(objPos &currFoodPos);
+    void checkSelfColision();
 
-    public:
-        enum Dir {UP, DOWN, LEFT, RIGHT, STOP};  // This is the direction state
-
-        
-
-        Player(GameMechs* thisGMRef); // Constructor
-        ~Player();
-
-        void getPlayerPos(objPosArrayList &returnPos); // Upgrade this in iteration 3.
-        void updatePlayerDir();
-        void movePlayer(int sizeX, int sizeY);
-        void setFoodObj(Food currFoodObj);
-        void getFoodPos(objPos &currFoodPos);
-        void checkSelfColision();
-        // TODO: Need more actions in here:
-        // after inserting the head, but before removing the tail
-        // - check if new head position collides with food
-        // - if yes, increment the score in Gm, generate new food,
-        // and dont remove the tail
-        // otherwise, remove the tail and move on
-
-        //Lastly, add check collision check:
-        // - if self-collided
-        // -set loseFlag and exitFlag to true (in GM)
-        // this will end the game
-        //
-        //- if ending, you need to differnetiate between win and lose
-        // LOST - display "You Lose" and the score
-        // WIN - display "ENDGAME" and the score
-    
-    private:
-        objPosArrayList *playerPosList;   // Upgrade this in iteration 3.       
-        enum Dir myDir;
-        Food foodObj;
-        // Need a reference to the Main Game Mechanisms
-        GameMechs* mainGameMechsRef;
+private:
+    objPosArrayList *playerPosList;
+    enum Dir myDir;
+    Food foodObj;
+    GameMechs *mainGameMechsRef;
 };
 
 #endif

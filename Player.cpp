@@ -16,18 +16,12 @@ Player::Player(GameMechs *thisGMRef)
 
     mainGameMechsRef = thisGMRef;
     myDir = STOP;
-    // playerPos.setObjPos(boardSizeX / 2, boardSizeY / 2, '@'); not true anymore
+
     objPos tempPos;
     tempPos.setObjPos(boardSizeX / 2, boardSizeY / 2, '@');
 
     playerPosList = new objPosArrayList();
     playerPosList->insertHead(tempPos);
-
-    // For bebugging purposes
-    // playerPosList->insertHead(tempPos);
-    // playerPosList->insertHead(tempPos);
-    // playerPosList->insertHead(tempPos);
-    // playerPosList->insertHead(tempPos);
 }
 
 Player::~Player()
@@ -40,14 +34,26 @@ Player::~Player()
     delete playerPosList;
 }
 
-void Player::getPlayerPos(objPosArrayList &returnPos)
+// void Player::getPlayerPos(objPosArrayList &returnPos)
+// {
+//     /*
+//     getPlayerPos:
+//     1. Return the player position
+//     */
+
+//    // Uses the copy constructor to return a copy of the playerPosList
+//    // Copy constructor: objPosArrayList::objPosArrayList(const objPosArrayList &objPosArrayListToCopy)
+
+//     returnPos = *playerPosList;
+// }
+
+objPosArrayList Player::getPlayerPos()
 {
     /*
     getPlayerPos:
     1. Return the player position
     */
-
-    returnPos = *playerPosList; // We need a copy constructor here
+    return *playerPosList;
 }
 
 void Player::updatePlayerDir()

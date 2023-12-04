@@ -7,26 +7,27 @@
 
 class objPosArrayList
 {
-    private:
-        objPos* aList;
-        int sizeList;
-        int sizeArray;
+private:
+    objPos *aList;
+    int sizeList;
+    int sizeArray;
 
-    public:
-        objPosArrayList();
-        // copy constructor
-        objPosArrayList(const objPosArrayList &objPosArrayListToCopy);
-        ~objPosArrayList();
+public:
+    // Constructor, Copy Constructor, Destructor
+    objPosArrayList();
+    objPosArrayList(const objPosArrayList &objPosArrayListToCopy);
+    ~objPosArrayList();
+    void copy(const objPosArrayList &objPosArrayListToCopy);
 
-        int getSize();
-        void insertHead(objPos thisPos);
-        void insertTail(objPos thisPos);
-        void removeHead();
-        void removeTail();
-        
-        void getHeadElement(objPos &returnPos);
-        void getTailElement(objPos &returnPos);
-        void getElement(objPos &returnPos, int index);
+    int getSize();
+    void insertHead(objPos thisPos);
+    void insertTail(objPos thisPos);
+    void removeHead();
+    void removeTail();
+
+    void getHeadElement(objPos &returnPos);
+    void getTailElement(objPos &returnPos);
+    void getElement(objPos &returnPos, int index);
 };
 
 #endif
